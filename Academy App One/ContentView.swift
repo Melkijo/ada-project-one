@@ -21,11 +21,11 @@ struct ContentView: View {
         
         NavigationStack{
             ScrollView{
-                VStack(spacing:28){
+                VStack(spacing:20){
                     
                     Spacer()
                     
-                    VStack{
+                    VStack(spacing:28){
                         VStack(alignment:.leading, spacing:12) {
                             Text("Gender")
                                 .font(.title3)
@@ -37,7 +37,7 @@ struct ContentView: View {
                                 // Male option
                                 GenderOptionView(
                                     genderImage: "male",
-                                    label: "Malessssss",
+                                    label: "Male",
                                     isSelected: selectionGender == "Male",
                                     color: .blue
                                 )
@@ -48,7 +48,7 @@ struct ContentView: View {
                                 // Female option
                                 GenderOptionView(
                                     genderImage: "female",
-                                    label: "Females",
+                                    label: "Female",
                                     isSelected: selectionGender == "Female",
                                     color: .pink
                                 )
@@ -204,27 +204,27 @@ struct ContentView: View {
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     
-                    ToolbarItem(placement: .topBarLeading) {
+                    ToolbarItem(placement: .principal) {
                         
                         Text("CoBMI")
-                            .font(.custom("ArchivoBlack-Regular", size: 20)).foregroundStyle(Color("Dark"))
-                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .font(.custom("ArchivoBlack-Regular", size: 24)).foregroundStyle(Color("Dark"))
+                            .frame(maxWidth: .infinity, alignment: .center)
                         
                         
                         
                     }
-                    ToolbarItem(placement: .topBarTrailing){
-                        NavigationLink{
-                            HistoryView()
-                            
-                        }label:{
+//                    ToolbarItem(placement: .topBarTrailing){
+//                        NavigationLink{
+//                            HistoryView()
+//                            
+//                        }label:{
 //                                                    Image(systemName: "clock.arrow.trianglehead.counterclockwise.rotate.90").padding(8)
 //                                                        .background(Color("MainGreen"))
 //                                                        .cornerRadius(6)
 //                                                        
-                            Text("History").font(.body).fontWeight(.medium).underline(true, color: Color("Dark"))
-                        }
-                    }
+//                            Text("History").font(.body).fontWeight(.medium).underline(true, color: Color("Dark"))
+//                        }
+//                    }
                 }.toolbarBackground(.white, for: .navigationBar)
                 .toolbarBackground(.visible, for: .navigationBar)
                 
