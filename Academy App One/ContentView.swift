@@ -48,7 +48,7 @@ struct ContentView: View {
                                 // Female option
                                 GenderOptionView(
                                     genderImage: "female",
-                                    label: "Female",
+                                    label: "Females",
                                     isSelected: selectionGender == "Female",
                                     color: .pink
                                 )
