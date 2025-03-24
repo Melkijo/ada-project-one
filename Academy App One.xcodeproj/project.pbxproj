@@ -24,7 +24,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		B437B2082D87E058009FA161 /* Academy App One.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Academy App One.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B437B2082D87E058009FA161 /* CoBMI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoBMI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B437B2182D87E059009FA161 /* Academy App OneTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Academy App OneTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B437B2222D87E059009FA161 /* Academy App OneUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Academy App OneUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -85,7 +85,7 @@
 		B437B2092D87E058009FA161 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				B437B2082D87E058009FA161 /* Academy App One.app */,
+				B437B2082D87E058009FA161 /* CoBMI.app */,
 				B437B2182D87E059009FA161 /* Academy App OneTests.xctest */,
 				B437B2222D87E059009FA161 /* Academy App OneUITests.xctest */,
 			);
@@ -114,7 +114,7 @@
 			packageProductDependencies = (
 			);
 			productName = "Academy App One";
-			productReference = B437B2082D87E058009FA161 /* Academy App One.app */;
+			productReference = B437B2082D87E058009FA161 /* CoBMI.app */;
 			productType = "com.apple.product-type.application";
 		};
 		B437B2172D87E059009FA161 /* Academy App OneTests */ = {
@@ -399,6 +399,7 @@
 				DEVELOPMENT_TEAM = 43D48TSAU5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Academy-App-One-Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -410,7 +411,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "mejo.Academy-App-One";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = CoBMI;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -428,6 +429,7 @@
 				DEVELOPMENT_TEAM = 43D48TSAU5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Academy-App-One-Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -439,7 +441,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "mejo.Academy-App-One";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = CoBMI;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

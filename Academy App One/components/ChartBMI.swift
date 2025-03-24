@@ -18,16 +18,18 @@ struct Score: Identifiable {
 struct ChartBMI: View {
     let bmi: Double
     
+    @State private var isActive: Bool = false
+    
     @State private var scores: [Score] = [
-        .init(type: "Severe Thinness", value: 5, color: .red),       // <16.0
-        .init(type: "Moderate Thinness", value: 2, color: .orange),  // 16.0-17.0
-        .init(type: "Mild Thinness", value: 3, color: .yellow),      // 17.0-18.5
-        .init(type: "Normal", value: 13, color: .green),              // 18.5-25.0
-        .init(type: "Overweight", value: 10, color: .yellow),         // 25.0-30.0
-        .init(type: "Obese Class I", value: 10, color: .orange),      // 30.0-35.0
-        .init(type: "Obese Class II", value: 10, color: .red),        // 35.0-40.0
-        .init(type: "Obese Class III", value: 10, color: .purple),     // >40.0
-        .init(type: "", value: 63, color: Color("Background"))
+        .init(type: "Severe Thinness", value: 5, color: Color("MainBlue")),       // <16.0
+        .init(type: "Moderate Thinness", value: 2, color: Color("MainBlue1")),  // 16.0-17.0
+        .init(type: "Mild Thinness", value: 3, color: Color("MainBlue2")),      // 17.0-18.5
+        .init(type: "Normal", value: 13, color: Color("MainGreen")),              // 18.5-25.0
+        .init(type: "Overweight", value: 10, color: Color("MainYellow")),         // 25.0-30.0
+        .init(type: "Obese Class I", value: 10, color: Color("MainRed")),      // 30.0-35.0
+        .init(type: "Obese Class II", value: 10, color: Color("MainRed1")),        // 35.0-40.0
+        .init(type: "Obese Class III", value: 10, color: Color("MainRed2")),     // >40.0
+        .init(type: "", value: 63, color: Color("LightBg"))
     ]
     
         private var arrowAngle: Double {
@@ -46,6 +48,7 @@ struct ChartBMI: View {
     var body: some View {
         
         VStack {
+            
             ZStack() {
                 Chart(scores) { score in
                                     SectorMark(
@@ -58,35 +61,32 @@ struct ChartBMI: View {
                                         by: .value("Type", score.type)
                                     )
                                 }
-                                .rotationEffect(.degrees(-90)) // Start at top
-                                .chartLegend(.hidden) // Show legend for categories
+                                .rotationEffect(.degrees(-90))
+                                .chartLegend(.hidden)
                                 .frame(width: 350, height: 350)
                 
-                Image("BMIarrow").resizable().scaledToFit().frame(width: 100).padding(.trailing,100).rotationEffect(.degrees(arrowAngle))
+                Image("BMIarrow")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 100)
+                    .padding(.trailing,100)
+                    .rotationEffect(.degrees(isActive ? arrowAngle : 0))
+                    .animation(.bouncy(duration: 0.8, extraBounce:  (0.1)), value: isActive)
+                
+                Image("indicatorBottom").resizable().scaledToFit().frame(width: 50).padding(.bottom,20)
             }
            
 
+        }.onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                withAnimation {
+                    self.isActive = true
+                }
+            }
         }
     }
 }
 
 #Preview {
-    ChartBMI(bmi: 16.0)
+    ChartBMI(bmi: 32.0)
 }
-
-//case ..<16:
-//    return "Severe Thinness"
-//case 16..<17:
-//    return "Moderate Thinness"
-//case 17..<18.5:
-//    return "Mild Thinness"
-//case 18.5..<25:
-//    return "Normal"
-//case 25..<30:
-//    return "Overweight"
-//case 30..<35:
-//    return "Obese Class I"
-//case 35..<40:
-//    return "Obese Class II"
-//default:
-//    return "Obese Class III"

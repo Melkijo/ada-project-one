@@ -16,7 +16,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "B437B2072D87E058009FA161"
-               BuildableName = "Academy App One.app"
+               BuildableName = "CoBMI.app"
                BlueprintName = "Academy App One"
                ReferencedContainer = "container:Academy App One.xcodeproj">
             </BuildableReference>
@@ -69,7 +69,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "B437B2072D87E058009FA161"
-            BuildableName = "Academy App One.app"
+            BuildableName = "CoBMI.app"
             BlueprintName = "Academy App One"
             ReferencedContainer = "container:Academy App One.xcodeproj">
          </BuildableReference>
@@ -86,7 +86,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "B437B2072D87E058009FA161"
-            BuildableName = "Academy App One.app"
+            BuildableName = "CoBMI.app"
             BlueprintName = "Academy App One"
             ReferencedContainer = "container:Academy App One.xcodeproj">
          </BuildableReference>

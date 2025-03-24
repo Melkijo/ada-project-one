@@ -10,19 +10,21 @@ import SwiftUI
 struct SplashView: View {
     @State private var isActive: Bool = false
     var body: some View {
+        
         ZStack {
+            // Set the background color at the ZStack level
+                       Color("Light")
+                           .ignoresSafeArea() // This extends the color to the edges
             if self.isActive {
                 ContentView()
             } else {
-                Rectangle()
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .background(Color.black)
-                Image("BMI")
+                Image("splash")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 100, height: 100)
+                    .frame(width: 200)
             }
-        }
+        }.frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color("Light"))
         .onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                 withAnimation {

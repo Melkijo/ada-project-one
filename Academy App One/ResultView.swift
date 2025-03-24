@@ -15,28 +15,35 @@ struct ResultView: View {
     
     @State var showResult: Bool = true
     
+    @State private var isActive: Bool = true
+    @State private var dataInserted: Bool = false // Track if we've inserted data
     
+    @State private var optionChoose: Int = 0
     
+    var historyBmi: [HistoryBMI] = []
     
-    // Move these calculations to computed properties
     var bmiScore: Double {
         calculateBMI(gender: gender, age: age, weight: weight, height: height)
     }
     
-    var bmiCategory: String {
+    var bmiCategory: BMICategory {
         getBMICategory(bmi: bmiScore)
     }
     
+    @Environment(\.modelContext) var context
+    
     var body: some View {
+        
+        
         NavigationStack{
             
-            ScrollView(.vertical, showsIndicators: false){
+            ScrollView(.vertical, showsIndicators: true){
                 Spacer(minLength:40)
                 
                 ZStack{
                     
                     ChartBMI(bmi: bmiScore)
-                  
+                    
                     
                     VStack(spacing:4){
                         VStack(alignment: .center){
@@ -45,44 +52,95 @@ struct ResultView: View {
                                 .font(.system(size: 64))
                                 .fontWeight(.bold)
                         }
-                      
                         
-                        Text(bmiCategory)
+                        
+                        Text(bmiCategory.name)
                             .font(.title2)
                             .fontWeight(.bold)
                             .padding(EdgeInsets(top: 8, leading: 32, bottom: 8, trailing: 32))
-                            .background(Color("Accent"))
+                            .background(bmiCategory.color)
                             .cornerRadius(8)
                             .foregroundStyle(.black)
                     }
                     .padding(.top,180)
                 }
-               
-               
-                VStack(spacing:20){
-                   
-                    
-                    
-                    Image("imageHero")
-                        .resizable()
-                        .frame( height: 200)
-                        .scaledToFit()
-                        .cornerRadius(12)
-                    
-                    
+                
+                HStack(alignment: .center, spacing: 10){
                     VStack{
-                        Text("Info Kesehatan").frame(maxWidth: .infinity, alignment: .leading).font(.headline).padding(.bottom,8)
-                        Text("BMI 31.23 masuk dalam kategori obesitas kelas 1, yang berisiko terhadap berbagai penyakit kronis. Dengan pola makan sehat dan aktivitas fisik teratur, berat badan dapat dikendalikan untuk mengurangi risiko kesehatan jangka panjang.").font(.body)
+//                        Text("Age :").font(.caption)
+                        Text("\(age) Years old").font(.body).fontWeight(.light)
+                        
                     }
-                    .padding()
+                    Text(" | ")
+                    VStack{
+//                        Text("Gender :").font(.caption)
+                        Text("\(gender)").font(.body).fontWeight(.light)
+
+                        
+                        
+                    }
+                    Text(" | ")
+                    VStack{
+//                        Text("Weight ").font(.caption)
+                        Text(String(format: "%.1f kg", weight)).font(.body).fontWeight(.light)
+
+                        
+                    }
+                    Text(" | ")
+                    VStack{
+//                        Text("Height :").font(.caption)
+                        Text(String(format: "%.f cm", height)).font(.body).fontWeight(.light)
+
+                        
+                    }
+                    
+                }.padding(.top,8)
+                    .padding(.bottom,32)
+                
+                
+                VStack(spacing:20){
+                    
+                    
+                    
+//                    Image("imageHero")
+//                        .resizable()
+//                        .frame( height: 200)
+//                        .scaledToFit()
+//                        .cornerRadius(12)
+                    
+                    
+                    VStack {
+                        Picker("", selection: $optionChoose) {
+                            Text("Health info").tag(0)
+                            Text("BMI info").tag(1)
+                           
+                        }
+                        .pickerStyle(.segmented)
+                        
+                        if(optionChoose == 0){
+                            InfoHealth(bmi: bmiScore)
+                        }else{
+                            InfoBMI(bmi: bmiScore)
+                        }
+                    }
                     .frame(alignment: .leading)
                     .background(Color("NeutralGray"))
                     .cornerRadius(12)
                     
+                    WeightRecommendation(height:height)
+                    
                     Spacer(minLength: 10)
                     
-                    NavigationLink("Re-calculate"){
-                        ContentView() .navigationBarBackButtonHidden(true)
+                    
+                    NavigationLink(destination: ContentView() .navigationBarBackButtonHidden(true)){
+                        
+                        HStack {
+                            Text("RE-CALCULATE")
+                                .font(.headline).fontWeight(.bold)
+                            Image(systemName: "arrow.turn.down.left").imageScale(.large)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 60)
                     }
                     .frame(maxWidth: .infinity)
                     .frame(height: 60)
@@ -90,64 +148,67 @@ struct ResultView: View {
                     .foregroundColor(.black)
                     .cornerRadius(12)
                     .font(.headline)
+                    .onAppear {
+                        // If you want to insert data when the view appears, do it here
+                        if isActive && !dataInserted {
+                            saveBMI()
+                            dataInserted = true
+                        }
+                    }
                     
                     Spacer()
                 }
                 .padding(.horizontal, 8)
                 .foregroundStyle(Color("Dark"))
-            }
-            .navigationTitle("Result").navigationBarTitleDisplayMode(.inline)
-            
+            }.background(Color("LightBg"))
+           .navigationBarTitleDisplayMode(.inline)
+           .toolbar {
+               
+               ToolbarItem(placement: .principal) {
+                   
+                   Text("Result")
+                       .font(.custom("ArchivoBlack-Regular", size: 24)).foregroundStyle(Color("Dark"))
+                       .frame(maxWidth: .infinity, alignment: .center)
+                   
+                   
+                   
+               }
+           }.toolbarBackground(.white, for: .navigationBar)
+                .toolbarBackground(.visible, for: .navigationBar) 
         }
         
-       
-       
         
+        
+        
+    }
+    
+    
+    // Function to save BMI data
+    func saveBMI() {
+        let bmi = HistoryBMI(
+            id: UUID().uuidString, // Better to use UUID for unique IDs
+            bmiScore: bmiScore,
+            category: bmiCategory.name,
+            date: Date()
+        )
+        context.insert(bmi)
+        
+        do {
+            try context.save()
+            print("BMI data saved successfully")
+        } catch {
+            print("Failed to save BMI data: \(error)")
+        }
     }
 }
 
 #Preview {
-    ResultView(gender: "male", age: 20, weight: 60, height:170)
+    ResultView(gender: "male", age: 20, weight: 80, height:170)
 }
 
 
-func calculateBMI(gender: String, age: Int, weight: Double, height: Double) -> Double {
-    // BMI formula: weight (kg) / (height (m))²
-    // Note: height is expected to be in meters
-    
-    // Ensure height is greater than 0 to avoid division by zero
-    guard height > 0 else {
-        return 0.0
-    }
-    
-    let heightM = height / 100.0
-    // Calculate BMI
-    let bmi = weight / (heightM * heightM)
-    
-    // Round to one decimal place
-    return round(bmi * 10) / 10
-}
 
-// Function to categorize BMI
-func getBMICategory(bmi: Double) -> String {
-    switch bmi {
-    case ..<16:
-        return "Severe Thinness"
-    case 16..<17:
-        return "Moderate Thinness"
-    case 17..<18.5:
-        return "Mild Thinness"
-    case 18.5..<25:
-        return "Normal"
-    case 25..<30:
-        return "Overweight"
-    case 30..<35:
-        return "Obese Class I"
-    case 35..<40:
-        return "Obese Class II"
-    default:
-        return "Obese Class III"
-    }
-}
+
+
 
 

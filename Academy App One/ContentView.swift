@@ -15,188 +15,237 @@ struct ContentView: View {
     @State private var height: Double = 0.0
     @State private var weightInput: String = ""
     @State private var weight: Double = 0.0
+    
+    
     var body: some View {
         
         NavigationStack{
-            Spacer()
-            VStack(spacing:28){
-                
-                
-                VStack {
-                    Text("Gender")
-                        .font(.headline)
-                        .foregroundStyle(Color("Dark"))
+            ScrollView{
+                VStack(spacing:28){
                     
+                    Spacer()
                     
-                    HStack(spacing: 16) {
-                        // Male option
-                        GenderOptionView(
-                            emoji: "🤷‍♂️",
-                            label: "Male",
-                            isSelected: selectionGender == "Male",
-                            color: .blue
-                        )
-                        .onTapGesture {
-                            selectionGender = "Male"
-                        }
-                        
-                        // Female option
-                        GenderOptionView(
-                            emoji: "🙍‍♀️",
-                            label: "Female",
-                            isSelected: selectionGender == "Female",
-                            color: .pink
-                        )
-                        .onTapGesture {
-                            selectionGender = "Female"
-                        }
-                    }
-                    
-                    
-                    
-                    
-                    
-                }
-                
-                
-                
-                VStack(alignment: .leading){
-                    Text("Age")
-                        .font(.headline)
-                    
-                    
-                    HStack{
-                        TextField("Enter your age", text: $ageInput)
-                            .keyboardType(.numberPad) // Better for age (integers only)
-                            .padding()
-                            .multilineTextAlignment(.center)
-                        //                            .onChange(of: ageInput) { oldValue, newValue in
-                        //                                // Filter out non-numeric characters
-                        //                                let filtered = newValue.filter { $0.isNumber }
-                        //
-                        //                                // Update the text field if needed
-                        //                                if filtered != newValue {
-                        //                                    ageInput = filtered
-                        //                                }
-                        //
-                        //                                // Convert to Int
-                        //                                age = Int(filtered) ?? 0
-                        //                            }
-                            .overlay(VStack{Divider().offset(x: 0, y: 15)})
-                        
-                        Text("Years")
-                        
-                        
-                    }
-                    
-                    
-                }
-                .padding(20)
-                .background(Color("NeutralGray"))
-                .cornerRadius(20)
-                
-                HStack(spacing:16){
-                    VStack(alignment:.leading){
-                        Text("Height")
-                            .font(.headline)
-                        HStack{
-                            TextField("00.00", text: $heightInput)
-                                .keyboardType(.decimalPad)
-                                .padding()
+                    VStack{
+                        VStack(alignment:.leading, spacing:12) {
+                            Text("Gender")
+                                .font(.title3)
+                                .foregroundStyle(Color("Dark"))
+                                .fontWeight(.bold)
                             
-                                .onChange(of: heightInput) { oldValue, newValue in
-                                    // Filter out non-numeric characters
-                                    let filtered = newValue.filter { $0.isNumber || $0 == "." }
-                                    
-                                    // Ensure only one decimal point
-                                    if filtered.filter({ $0 == "." }).count > 1,
-                                       let lastIndex = filtered.lastIndex(of: ".") {
-                                        var newFiltered = filtered
-                                        newFiltered.remove(at: lastIndex)
-                                        heightInput = newFiltered
-                                    } else {
-                                        heightInput = filtered
-                                    }
-                                    
-                                    // Convert to Double
-                                    height = Double(filtered) ?? 0.0
-                                }
-                                .overlay(VStack{Divider().offset(x: 0, y: 15)})
-                            Text("CM")
-                        }
-                        
-                    }
-                    .padding( 20)
-                    .background(Color("NeutralGray"))
-                    .cornerRadius(12)
-                    
-                    VStack(alignment:.leading){
-                        Text("Weight")
-                            .font(.headline)
-                        HStack{
-                            TextField("00.00", text: $weightInput)
-                                .keyboardType(.decimalPad)
-                                .padding()
-                                .onChange(of: weightInput) { oldValue, newValue in
-                                    // Filter out non-numeric characters
-                                    let filtered = newValue.filter { $0.isNumber || $0 == "." }
-                                    
-                                    // Ensure only one decimal point
-                                    if filtered.filter({ $0 == "." }).count > 1,
-                                       let lastIndex = filtered.lastIndex(of: ".") {
-                                        var newFiltered = filtered
-                                        newFiltered.remove(at: lastIndex)
-                                        weightInput = newFiltered
-                                    } else {
-                                        weightInput = filtered
-                                    }
-                                    
-                                    // Convert to Double
-                                    weight = Double(filtered) ?? 0.0
-                                }
-                                .overlay(VStack{Divider().offset(x: 0, y: 15)})
                             
-                            Text("KG")
+                            HStack(spacing: 8) {
+                                // Male option
+                                GenderOptionView(
+                                    genderImage: "male",
+                                    label: "Male",
+                                    isSelected: selectionGender == "Male",
+                                    color: .blue
+                                )
+                                .onTapGesture {
+                                    selectionGender = "Male"
+                                }
+                                
+                                // Female option
+                                GenderOptionView(
+                                    genderImage: "female",
+                                    label: "Female",
+                                    isSelected: selectionGender == "Female",
+                                    color: .pink
+                                )
+                                .onTapGesture {
+                                    selectionGender = "Female"
+                                }
+                            }
                         }
                         
+                        VStack(alignment: .leading, spacing:12){
+                            Text("Age")
+                                .font(.title3)
+                                .foregroundStyle(Color("Dark"))
+                                .fontWeight(.bold)
+                            
+                            
+                            HStack{
+                                TextField("Enter your age", text: $ageInput)
+                                    .keyboardType(.numberPad) // Better for age (integers only)
+                                    .multilineTextAlignment(.leading)
+                                    .onChange(of: ageInput) { oldValue, newValue in
+                                        // Filter out non-numeric characters
+                                        let filtered = newValue.filter { $0.isNumber }
+                                        
+                                        // Update the text field if needed
+                                        if filtered != newValue {
+                                            ageInput = filtered
+                                        }
+                                        
+                                        // Convert to Int
+                                        age = Int(filtered) ?? 0
+                                    }
+                                    .overlay(VStack{Divider().offset(x: 0, y: 15)})
+                                    .font(.title).fontWeight(.bold)
+                                
+                                Text("Years").font(.title3).fontWeight(.semibold)
+                                
+                                
+                            } .padding(EdgeInsets(top: 52, leading: 32, bottom: 52, trailing: 32))
+                                .background(Color("Light"))
+                                .cornerRadius(20)
+                            
+                            
+                        }
+                        
+                        
+                        HStack(spacing:8){
+                            VStack(alignment:.leading, spacing:12){
+                                Text("Height")
+                                    .font(.title3)
+                                    .foregroundStyle(Color("Dark"))
+                                    .fontWeight(.bold)
+                                HStack{
+                                    TextField("00.00", text: $heightInput)
+                                        .keyboardType(.decimalPad)
+                                        .padding()
+                                    
+                                        .onChange(of: heightInput) { oldValue, newValue in
+                                            // Filter out non-numeric characters
+                                            let filtered = newValue.filter { $0.isNumber || $0 == "." }
+                                            
+                                            // Ensure only one decimal point
+                                            if filtered.filter({ $0 == "." }).count > 1,
+                                               let lastIndex = filtered.lastIndex(of: ".") {
+                                                var newFiltered = filtered
+                                                newFiltered.remove(at: lastIndex)
+                                                heightInput = newFiltered
+                                            } else {
+                                                heightInput = filtered
+                                            }
+                                            
+                                            // Convert to Double
+                                            height = Double(filtered) ?? 0.0
+                                        }
+                                        .overlay(VStack{Divider().offset(x: 0, y: 15)})
+                                        .font(.title2)
+                                        .fontWeight(.bold)
+                                    Text("cm").font(.title2).fontWeight(.medium)
+                                }.padding(EdgeInsets(top: 32, leading: 20, bottom: 32, trailing: 20))
+                                    .background(Color("Light"))
+                                    .cornerRadius(12)
+                                
+                            }
+                            
+                            
+                            VStack(alignment:.leading,spacing:12){
+                                Text("Weight")
+                                    .font(.title3)
+                                    .foregroundStyle(Color("Dark"))
+                                    .fontWeight(.bold)
+                                HStack{
+                                    TextField("00.00", text: $weightInput)
+                                        .keyboardType(.decimalPad)
+                                        .padding()
+                                        .onChange(of: weightInput) { oldValue, newValue in
+                                            // Filter out non-numeric characters
+                                            let filtered = newValue.filter { $0.isNumber || $0 == "." }
+                                            
+                                            // Ensure only one decimal point
+                                            if filtered.filter({ $0 == "." }).count > 1,
+                                               let lastIndex = filtered.lastIndex(of: ".") {
+                                                var newFiltered = filtered
+                                                newFiltered.remove(at: lastIndex)
+                                                weightInput = newFiltered
+                                            } else {
+                                                weightInput = filtered
+                                            }
+                                            
+                                            // Convert to Double
+                                            weight = Double(filtered) ?? 0.0
+                                        }
+                                        .overlay(VStack{Divider().offset(x: 0, y: 15)})
+                                        .font(.title2)
+                                        .fontWeight(.bold)
+                                    Text("kg").font(.title2).fontWeight(.medium)
+                                } .padding(EdgeInsets(top: 32, leading: 20, bottom: 32, trailing: 20))
+                                    .background(Color("Light"))
+                                    .cornerRadius(12)
+                                
+                            }
+                            
+                        }
+                    }.onTapGesture {
+                        hideKeyboard()
                     }
-                    .padding( 20)
-                    .background(Color("NeutralGray"))
+                   
+                    
+                    
+                    Spacer()
+                    NavigationLink(destination: ResultView(gender: selectionGender, age: age, weight: weight, height: height).navigationBarBackButtonHidden(true)) {
+                        HStack {
+                            Text("CALCULATE")
+                                .font(.headline).fontWeight(.bold)
+                            Image(systemName: "arrow.2.squarepath").imageScale(.large) //
+                        }
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 60)
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    .background(isFormValid() ? Color("Accent") : Color.gray.opacity(0.5))
+                    .foregroundColor(.black)
                     .cornerRadius(12)
-                }
+                    .disabled(!isFormValid())
+                    
+                    Spacer()
+                    
+                    
+                    
+                    
+                }.padding(.horizontal,8)
                 
+            }.background(Color("LightBg"))
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    
+                    ToolbarItem(placement: .topBarLeading) {
+                        
+                        Text("CoBMI")
+                            .font(.custom("ArchivoBlack-Regular", size: 20)).foregroundStyle(Color("Dark"))
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        
+                        
+                        
+                    }
+                    ToolbarItem(placement: .topBarTrailing){
+                        NavigationLink{
+                            HistoryView()
+                            
+                        }label:{
+//                                                    Image(systemName: "clock.arrow.trianglehead.counterclockwise.rotate.90").padding(8)
+//                                                        .background(Color("MainGreen"))
+//                                                        .cornerRadius(6)
+//                                                        
+                            Text("History").font(.body).fontWeight(.medium).underline(true, color: Color("Dark"))
+                        }
+                    }
+                }.toolbarBackground(.white, for: .navigationBar)
+                .toolbarBackground(.visible, for: .navigationBar)
                 
-                
-                
-            }.navigationTitle("BMI Calculator").navigationBarTitleDisplayMode(.inline)
             
-            
-            Spacer()
-            NavigationLink("Calculate"){
-                ResultView(gender: selectionGender,age: age, weight: weight, height: height).navigationBarBackButtonHidden(true)
-            }
-            .frame(maxWidth: .infinity)
-            .frame(height: 60)
-            .background(Color("Accent"))
-            .foregroundColor(.black)
-            .cornerRadius(12)
-            .font(.headline)
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-        }
-        .padding(.horizontal, 8)
-        .foregroundStyle(Color("Dark"))
+        }.foregroundStyle(Color("Dark"))
+        
+        
+        
     }
+    
+    private func isFormValid() -> Bool {
+        let ageConverted = Int(ageInput) ?? 0
+        let heightConverted = Int(heightInput) ?? 0
+        let weightConverted = Int(weightInput) ?? 0
+        let isAgeValid = ageConverted >= 2 && ageConverted <= 120
+        let isHeightValid = heightConverted >= 50 && heightConverted <= 250 // assuming height in cm
+        let isWeightValid = weightConverted >= 3 && weightConverted <= 500 // assuming weight in kg
+        
+        return isAgeValid && isHeightValid && isWeightValid
+    }
+    
 }
 
 #Preview {
@@ -205,27 +254,23 @@ struct ContentView: View {
 
 
 struct GenderOptionView: View {
-    let emoji: String
+    let genderImage: String
     let label: String
     let isSelected: Bool
     let color: Color
     
     var body: some View {
-        VStack {
-            Text(emoji)
-                .font(.system(size: 40))
+        VStack(alignment: .center, spacing: 16) {
+            Image(genderImage).resizable().scaledToFill().frame(width: 50, height: 50)
+            
             Text(label)
-                .foregroundColor(isSelected ? .black : .primary)
+                .foregroundColor(isSelected ? .black : .primary).fontWeight(.medium)
         }
         .frame(maxWidth: .infinity)
         .frame(height: 140)
         .background(
             RoundedRectangle(cornerRadius: 8)
-                .fill(isSelected ? Color("Accent") : Color("NeutralGray"))
+                .fill(isSelected ? Color("Accent") : Color("Light"))
         )
-        //        .overlay(
-        //            RoundedRectangle(cornerRadius: 12)
-        //                .stroke(isSelected ? color : Color.clear, lineWidth: 3)
-        //        )
     }
 }
