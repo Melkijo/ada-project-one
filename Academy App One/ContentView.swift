@@ -70,15 +70,11 @@ struct ContentView: View {
                                         .multilineTextAlignment(.leading)
                                         .onChange(of: ageInput) { oldValue, newValue in
                                             // Filter out non-numeric characters
-                                            let filtered = newValue.filter { $0.isNumber }
-                                            
-                                            // Update the text field if needed
-                                            if filtered != newValue {
-                                                ageInput = filtered
+                                            if newValue.count > 3 {
+                                                ageInput = String(newValue.prefix(3))
                                             }
+                                            age = Int(newValue) ?? 0
                                             
-                                            // Convert to Int
-                                            age = Int(filtered) ?? 0
                                         }
                                         .overlay(VStack{Divider().offset(x: 0, y: 15)})
                                         .font(.title).fontWeight(.bold)
@@ -88,7 +84,7 @@ struct ContentView: View {
                                     
                                 }
                                 
-                                Text("*age should be between 1 and 120").font(.caption).foregroundStyle(age < 1 || age > 120 ? Color.red : Color.gray)
+                                Text("*age should be between 2 and 120").font(.caption).foregroundStyle(age < 2 || age > 120 ? Color.red : Color.gray)
                             }.padding(EdgeInsets(top: 40, leading: 32, bottom: 20, trailing: 32))
                                 .background(Color("Light"))
                                 .cornerRadius(20)
@@ -116,20 +112,10 @@ struct ContentView: View {
                                         
                                             .onChange(of: heightInput) { oldValue, newValue in
                                                 // Filter out non-numeric characters
-                                                let filtered = newValue.filter { $0.isNumber || $0 == "." }
-                                                
-                                                // Ensure only one decimal point
-                                                if filtered.filter({ $0 == "." }).count > 1,
-                                                   let lastIndex = filtered.lastIndex(of: ".") {
-                                                    var newFiltered = filtered
-                                                    newFiltered.remove(at: lastIndex)
-                                                    heightInput = newFiltered
-                                                } else {
-                                                    heightInput = filtered
+                                                if newValue.count > 3 {
+                                                    heightInput = String(newValue.prefix(3))
                                                 }
-                                                
-                                                // Convert to Double
-                                                height = Double(filtered) ?? 0.0
+                                                height = Double(newValue) ?? 0
                                             }
                                             .overlay(VStack{Divider().offset(x: 0, y: 15)})
                                             .font(.title2)
@@ -158,21 +144,10 @@ struct ContentView: View {
                                             .keyboardType(.decimalPad)
                                             .padding()
                                             .onChange(of: weightInput) { oldValue, newValue in
-                                                // Filter out non-numeric characters
-                                                let filtered = newValue.filter { $0.isNumber || $0 == "." }
-                                                
-                                                // Ensure only one decimal point
-                                                if filtered.filter({ $0 == "." }).count > 1,
-                                                   let lastIndex = filtered.lastIndex(of: ".") {
-                                                    var newFiltered = filtered
-                                                    newFiltered.remove(at: lastIndex)
-                                                    weightInput = newFiltered
-                                                } else {
-                                                    weightInput = filtered
+                                                if newValue.count > 3 {
+                                                    weightInput = String(newValue.prefix(3))
                                                 }
-                                                
-                                                // Convert to Double
-                                                weight = Double(filtered) ?? 0.0
+                                                weight = Double(newValue) ?? 0
                                             }
                                             .overlay(VStack{Divider().offset(x: 0, y: 15)})
                                             .font(.title2)
@@ -254,12 +229,14 @@ struct ContentView: View {
     }
     
     private func isFormValid() -> Bool {
-        let ageConverted = Int(ageInput) ?? 0
-        let heightConverted = Int(heightInput) ?? 0
-        let weightConverted = Int(weightInput) ?? 0
-        let isAgeValid = ageConverted >= 1 && ageConverted <= 120
+        let ageConverted = age
+        let heightConverted = height
+        let weightConverted = weight
+        let isAgeValid = ageConverted >= 2 && ageConverted <= 120
         let isHeightValid = heightConverted >= 50 && heightConverted <= 300 // assuming height in cm
         let isWeightValid = weightConverted >= 5 && weightConverted <= 500 // assuming weight in kg
+        
+        
         
         return isAgeValid && isHeightValid && isWeightValid
     }
