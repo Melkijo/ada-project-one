@@ -198,7 +198,7 @@ struct ContentView: View {
                     
                     
                     
-                }.padding(.horizontal,8)
+                }.padding(.horizontal,16)
                 
             }.background(Color("LightBg"))
                 .navigationBarTitleDisplayMode(.inline)
@@ -225,7 +225,7 @@ struct ContentView: View {
 //                            Text("History").font(.body).fontWeight(.medium).underline(true, color: Color("Dark"))
 //                        }
 //                    }
-                }.toolbarBackground(.white, for: .navigationBar)
+                }.toolbarBackground(Color("Light"), for: .navigationBar)
                 .toolbarBackground(.visible, for: .navigationBar)
                 
             

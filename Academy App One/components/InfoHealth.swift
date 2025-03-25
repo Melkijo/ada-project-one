@@ -147,7 +147,7 @@ struct InfoHealth: View {
                 
                 VStack(alignment:.leading){
                     Text("Health Risks:")
-                        .font(.headline).foregroundStyle(Color("MainRed2"))
+                        .font(.headline).foregroundStyle(Color("MainRed"))
 
                     ForEach(risks, id: \.self) { risk in
                         Text("- \(risk)").font(.body).foregroundStyle(Color("Dark")).padding(.bottom, 4)
@@ -164,7 +164,7 @@ struct InfoHealth: View {
                     Text("- \(tip)").font(.body).foregroundStyle(Color("Dark")).padding(.bottom, 4)
                 }
             }
-            .padding(EdgeInsets(top: 32, leading: 20, bottom: 8, trailing: 20))
+            .padding(EdgeInsets(top: 20, leading: 20, bottom: 20, trailing: 20))
             .background(Color("Light"))
             .cornerRadius(8)
         }
