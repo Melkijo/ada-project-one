@@ -61,33 +61,39 @@ struct ContentView: View {
                                 .font(.title3)
                                 .foregroundStyle(Color("Dark"))
                                 .fontWeight(.bold)
-                            
-                            
-                            HStack{
-                                TextField("Enter your age", text: $ageInput)
-                                    .keyboardType(.numberPad) // Better for age (integers only)
-                                    .multilineTextAlignment(.leading)
-                                    .onChange(of: ageInput) { oldValue, newValue in
-                                        // Filter out non-numeric characters
-                                        let filtered = newValue.filter { $0.isNumber }
-                                        
-                                        // Update the text field if needed
-                                        if filtered != newValue {
-                                            ageInput = filtered
+                            VStack(alignment: .leading, spacing:20){
+                                HStack{
+                                    TextField("Enter your age", text: $ageInput)
+                                        .keyboardType(.numberPad) // Better for age (integers only)
+                                        .multilineTextAlignment(.leading)
+                                        .onChange(of: ageInput) { oldValue, newValue in
+                                            // Filter out non-numeric characters
+                                            let filtered = newValue.filter { $0.isNumber }
+                                            
+                                            // Update the text field if needed
+                                            if filtered != newValue {
+                                                ageInput = filtered
+                                            }
+                                            
+                                            // Convert to Int
+                                            age = Int(filtered) ?? 0
                                         }
-                                        
-                                        // Convert to Int
-                                        age = Int(filtered) ?? 0
-                                    }
-                                    .overlay(VStack{Divider().offset(x: 0, y: 15)})
-                                    .font(.title).fontWeight(.bold)
+                                        .overlay(VStack{Divider().offset(x: 0, y: 15)})
+                                        .font(.title).fontWeight(.bold)
+                                    
+                                    Text("Years").font(.title3).fontWeight(.semibold)
+                                    
+                                    
+                                }
                                 
-                                Text("Years").font(.title3).fontWeight(.semibold)
-                                
-                                
-                            } .padding(EdgeInsets(top: 52, leading: 32, bottom: 52, trailing: 32))
+                                Text("*age should be between 1 and 120").font(.caption).foregroundStyle(age < 1 || age > 120 ? Color.red : Color.gray)
+                            }.padding(EdgeInsets(top: 40, leading: 32, bottom: 20, trailing: 32))
                                 .background(Color("Light"))
                                 .cornerRadius(20)
+                            
+                            
+                            
+                            
                             
                             
                         }
@@ -99,35 +105,41 @@ struct ContentView: View {
                                     .font(.title3)
                                     .foregroundStyle(Color("Dark"))
                                     .fontWeight(.bold)
-                                HStack{
-                                    TextField("00.00", text: $heightInput)
-                                        .keyboardType(.decimalPad)
-                                        .padding()
-                                    
-                                        .onChange(of: heightInput) { oldValue, newValue in
-                                            // Filter out non-numeric characters
-                                            let filtered = newValue.filter { $0.isNumber || $0 == "." }
-                                            
-                                            // Ensure only one decimal point
-                                            if filtered.filter({ $0 == "." }).count > 1,
-                                               let lastIndex = filtered.lastIndex(of: ".") {
-                                                var newFiltered = filtered
-                                                newFiltered.remove(at: lastIndex)
-                                                heightInput = newFiltered
-                                            } else {
-                                                heightInput = filtered
+                                
+                                VStack{
+                                    HStack{
+                                        TextField("00.00", text: $heightInput)
+                                            .keyboardType(.decimalPad)
+                                            .padding()
+                                        
+                                            .onChange(of: heightInput) { oldValue, newValue in
+                                                // Filter out non-numeric characters
+                                                let filtered = newValue.filter { $0.isNumber || $0 == "." }
+                                                
+                                                // Ensure only one decimal point
+                                                if filtered.filter({ $0 == "." }).count > 1,
+                                                   let lastIndex = filtered.lastIndex(of: ".") {
+                                                    var newFiltered = filtered
+                                                    newFiltered.remove(at: lastIndex)
+                                                    heightInput = newFiltered
+                                                } else {
+                                                    heightInput = filtered
+                                                }
+                                                
+                                                // Convert to Double
+                                                height = Double(filtered) ?? 0.0
                                             }
-                                            
-                                            // Convert to Double
-                                            height = Double(filtered) ?? 0.0
-                                        }
-                                        .overlay(VStack{Divider().offset(x: 0, y: 15)})
-                                        .font(.title2)
-                                        .fontWeight(.bold)
-                                    Text("cm").font(.title2).fontWeight(.medium)
-                                }.padding(EdgeInsets(top: 32, leading: 20, bottom: 32, trailing: 20))
+                                            .overlay(VStack{Divider().offset(x: 0, y: 15)})
+                                            .font(.title2)
+                                            .fontWeight(.bold)
+                                        Text("cm").font(.title2).fontWeight(.medium)
+                                    }
+                                    Text("*height should be between 50cm to 300cm").font(.caption2).foregroundStyle(height < 50 || height > 300 ? Color.red : Color.gray)
+                                    
+                                }.padding(EdgeInsets(top: 32, leading: 20, bottom: 20, trailing: 20))
                                     .background(Color("Light"))
                                     .cornerRadius(12)
+                                
                                 
                             }
                             
@@ -137,34 +149,40 @@ struct ContentView: View {
                                     .font(.title3)
                                     .foregroundStyle(Color("Dark"))
                                     .fontWeight(.bold)
-                                HStack{
-                                    TextField("00.00", text: $weightInput)
-                                        .keyboardType(.decimalPad)
-                                        .padding()
-                                        .onChange(of: weightInput) { oldValue, newValue in
-                                            // Filter out non-numeric characters
-                                            let filtered = newValue.filter { $0.isNumber || $0 == "." }
-                                            
-                                            // Ensure only one decimal point
-                                            if filtered.filter({ $0 == "." }).count > 1,
-                                               let lastIndex = filtered.lastIndex(of: ".") {
-                                                var newFiltered = filtered
-                                                newFiltered.remove(at: lastIndex)
-                                                weightInput = newFiltered
-                                            } else {
-                                                weightInput = filtered
+                                
+                                VStack{
+                                    HStack{
+                                        TextField("00.00", text: $weightInput)
+                                            .keyboardType(.decimalPad)
+                                            .padding()
+                                            .onChange(of: weightInput) { oldValue, newValue in
+                                                // Filter out non-numeric characters
+                                                let filtered = newValue.filter { $0.isNumber || $0 == "." }
+                                                
+                                                // Ensure only one decimal point
+                                                if filtered.filter({ $0 == "." }).count > 1,
+                                                   let lastIndex = filtered.lastIndex(of: ".") {
+                                                    var newFiltered = filtered
+                                                    newFiltered.remove(at: lastIndex)
+                                                    weightInput = newFiltered
+                                                } else {
+                                                    weightInput = filtered
+                                                }
+                                                
+                                                // Convert to Double
+                                                weight = Double(filtered) ?? 0.0
                                             }
-                                            
-                                            // Convert to Double
-                                            weight = Double(filtered) ?? 0.0
-                                        }
-                                        .overlay(VStack{Divider().offset(x: 0, y: 15)})
-                                        .font(.title2)
-                                        .fontWeight(.bold)
-                                    Text("kg").font(.title2).fontWeight(.medium)
-                                } .padding(EdgeInsets(top: 32, leading: 20, bottom: 32, trailing: 20))
+                                            .overlay(VStack{Divider().offset(x: 0, y: 15)})
+                                            .font(.title2)
+                                            .fontWeight(.bold)
+                                        Text("kg").font(.title2).fontWeight(.medium)
+                                    }
+                                    Text("*weight should be between 5kg to 500kg").font(.caption2).foregroundStyle(weight < 5 || weight > 500 ? Color.red : Color.gray)
+                                    
+                                }.padding(EdgeInsets(top: 32, leading: 20, bottom: 20, trailing: 20))
                                     .background(Color("Light"))
                                     .cornerRadius(12)
+                                
                                 
                             }
                             
@@ -204,7 +222,7 @@ struct ContentView: View {
                     
                     ToolbarItem(placement: .principal) {
                         
-                        Text("CoBMI")
+                        Text("BoMI")
                             .font(.custom("ArchivoBlack-Regular", size: 24)).foregroundStyle(Color("Dark"))
                             .frame(maxWidth: .infinity, alignment: .center)
                         
@@ -237,9 +255,9 @@ struct ContentView: View {
         let ageConverted = Int(ageInput) ?? 0
         let heightConverted = Int(heightInput) ?? 0
         let weightConverted = Int(weightInput) ?? 0
-        let isAgeValid = ageConverted >= 2 && ageConverted <= 120
-        let isHeightValid = heightConverted >= 50 && heightConverted <= 250 // assuming height in cm
-        let isWeightValid = weightConverted >= 3 && weightConverted <= 500 // assuming weight in kg
+        let isAgeValid = ageConverted >= 1 && ageConverted <= 120
+        let isHeightValid = heightConverted >= 50 && heightConverted <= 300 // assuming height in cm
+        let isWeightValid = weightConverted >= 5 && weightConverted <= 500 // assuming weight in kg
         
         return isAgeValid && isHeightValid && isWeightValid
     }
