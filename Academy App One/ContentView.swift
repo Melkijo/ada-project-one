@@ -16,9 +16,7 @@ struct ContentView: View {
     @State private var weightInput: String = ""
     @State private var weight: Double = 0.0
     
-    
     var body: some View {
-        
         NavigationStack{
             ScrollView{
                 VStack(spacing:20){
@@ -171,7 +169,7 @@ struct ContentView: View {
                     
                     
                     Spacer()
-                    NavigationLink(destination: ResultView(gender: selectionGender, age: age, weight: weight, height: height).navigationBarBackButtonHidden(true)) {
+                    NavigationLink(destination: ResultView(gender: selectionGender, age: $age, weight: $weight, height: $height, ageInput: $ageInput, weightInput: $weightInput, heightInput: $heightInput).navigationBarBackButtonHidden(true)) {
                         HStack {
                             Text("CALCULATE")
                                 .font(.headline).fontWeight(.bold)
