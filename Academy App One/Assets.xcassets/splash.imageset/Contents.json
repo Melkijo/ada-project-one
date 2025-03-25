@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "splash.png",
+      "filename" : "BoMILight.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
@@ -12,7 +12,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "splash-dark.png",
+      "filename" : "BoMIDark.png",
       "idiom" : "universal",
       "scale" : "1x"
     },

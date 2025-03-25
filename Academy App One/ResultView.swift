@@ -30,6 +30,8 @@ struct ResultView: View {
         getBMICategory(bmi: bmiScore)
     }
     
+    @Environment(\.dismiss) private var dismiss
+    
     @Environment(\.modelContext) var context
     
     var body: some View {
@@ -64,50 +66,41 @@ struct ResultView: View {
                     }
                     .padding(.top,180)
                 }
-                
-                HStack(alignment: .center, spacing: 10){
-                    VStack{
-//                        Text("Age :").font(.caption)
-                        Text("\(age) Years old").font(.body).fontWeight(.light)
-                        
-                    }
-                    Text(" | ")
-                    VStack{
-//                        Text("Gender :").font(.caption)
-                        Text("\(gender)").font(.body).fontWeight(.light)
-
-                        
-                        
-                    }
-                    Text(" | ")
-                    VStack{
-//                        Text("Weight ").font(.caption)
-                        Text(String(format: "%.1f kg", weight)).font(.body).fontWeight(.light)
-
-                        
-                    }
-                    Text(" | ")
-                    VStack{
-//                        Text("Height :").font(.caption)
-                        Text(String(format: "%.f cm", height)).font(.body).fontWeight(.light)
-
-                        
-                    }
-                    
-                }.padding(.top,8)
-                    .padding(.bottom,32)
-                
-                
+//                
+//                HStack(alignment: .center, spacing: 10){
+//                    VStack{
+////                        Text("Age :").font(.caption)
+//                        Text("\(age) Years old").font(.body).fontWeight(.light)
+//                        
+//                    }
+//                    Text(" | ")
+//                    VStack{
+////                        Text("Gender :").font(.caption)
+//                        Text("\(gender)").font(.body).fontWeight(.light)
+//
+//                        
+//                        
+//                    }
+//                    Text(" | ")
+//                    VStack{
+////                        Text("Weight ").font(.caption)
+//                        Text(String(format: "%.1f kg", weight)).font(.body).fontWeight(.light)
+//
+//                        
+//                    }
+//                    Text(" | ")
+//                    VStack{
+////                        Text("Height :").font(.caption)
+//                        Text(String(format: "%.f cm", height)).font(.body).fontWeight(.light)
+//
+//                        
+//                    }
+//                    
+//                }.padding(.top,8)
+//                    .padding(.bottom,32)
+//                
+//                
                 VStack(spacing:20){
-                    
-                    
-                    
-//                    Image("imageHero")
-//                        .resizable()
-//                        .frame( height: 200)
-//                        .scaledToFit()
-//                        .cornerRadius(12)
-                    
                     
                     VStack {
                         Picker("", selection: $optionChoose) {
@@ -124,7 +117,7 @@ struct ResultView: View {
                         }
                     }
                     .frame(alignment: .leading)
-                    .background(Color("NeutralGray"))
+                    .background(Color("Light"))
                     .cornerRadius(12)
                     
                     WeightRecommendation(height:height)
@@ -132,7 +125,7 @@ struct ResultView: View {
                     Spacer(minLength: 10)
                     
                     
-                    NavigationLink(destination: ContentView() .navigationBarBackButtonHidden(true)){
+                    NavigationLink(destination: ContentView()){
                         
                         HStack {
                             Text("RE-CALCULATE")
@@ -158,8 +151,9 @@ struct ResultView: View {
                     
                     Spacer()
                 }
-                .padding(.horizontal, 8)
+                .padding(.horizontal, 16)
                 .foregroundStyle(Color("Dark"))
+                
             }.background(Color("LightBg"))
            .navigationBarTitleDisplayMode(.inline)
            .toolbar {
@@ -168,13 +162,22 @@ struct ResultView: View {
                    
                    Text("Result")
                        .font(.custom("ArchivoBlack-Regular", size: 24)).foregroundStyle(Color("Dark"))
-                       .frame(maxWidth: .infinity, alignment: .center)
-                   
+                       
                    
                    
                }
-           }.toolbarBackground(.white, for: .navigationBar)
-                .toolbarBackground(.visible, for: .navigationBar) 
+               ToolbarItem(placement: .navigationBarLeading) {
+                   Button(action: {
+                       dismiss()
+                   }) {
+                       HStack {
+                           Image(systemName: "chevron.left")
+                           Text("Back")
+                       }.foregroundStyle(Color("Dark"))
+                   }
+               }
+           }.toolbarBackground(Color("Light"), for: .navigationBar)
+                .toolbarBackground(.visible, for: .navigationBar)
         }
         
         

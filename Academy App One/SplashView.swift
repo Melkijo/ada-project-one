@@ -13,7 +13,7 @@ struct SplashView: View {
         
         ZStack {
             // Set the background color at the ZStack level
-                       Color("Light")
+                       Color("LightBg")
                            .ignoresSafeArea() // This extends the color to the edges
             if self.isActive {
                 ContentView()
@@ -23,8 +23,7 @@ struct SplashView: View {
                     .scaledToFit()
                     .frame(width: 200)
             }
-        }.frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color("Light"))
+        }
         .onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                 withAnimation {
