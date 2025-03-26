@@ -16,6 +16,10 @@ struct ContentView: View {
     @State private var weightInput: String = ""
     @State private var weight: Double = 0.0
     
+    @State private var isHeightEdited = false
+    @State private var isWeightEdited = false
+    @State private var isAgeEdited = false
+    
     var body: some View {
         NavigationStack{
             ScrollView{
@@ -67,6 +71,8 @@ struct ContentView: View {
                                         .keyboardType(.numberPad) // Better for age (integers only)
                                         .multilineTextAlignment(.leading)
                                         .onChange(of: ageInput) { oldValue, newValue in
+                                            
+                                            isAgeEdited = true
                                             // Filter out non-numeric characters
                                             if newValue.count > 3 {
                                                 ageInput = String(newValue.prefix(3))
@@ -76,22 +82,30 @@ struct ContentView: View {
                                         }
                                         .overlay(VStack{Divider().offset(x: 0, y: 15)})
                                         .font(.title).fontWeight(.bold)
+                                        .accentColor(Color("Dark"))
                                     
                                     Text("Years").font(.title3).fontWeight(.semibold)
                                     
                                     
                                 }
                                 
-                                Text("*age should be between 2 and 120").font(.caption).foregroundStyle(age < 2 || age > 120 ? Color.red : Color.gray)
+                                if isAgeEdited && (age < 2 || age > 120) {
+                                    Text("*age should be between 2 and 120")
+                                        .font(.caption2)
+                                        .foregroundStyle(Color.red)
+                                }else{
+                                    Text("*age should be between 2 and 120")
+                                        .font(.caption2)
+                                        .foregroundStyle(Color("Light"))
+                                }
+                                
+//                                Text("*age should be between 2 and 120")
+//                                    .font(.caption)
+//                                    .foregroundStyle(age < 2 || age > 120 ? Color.red : Color("Light"))
+                                
                             }.padding(EdgeInsets(top: 40, leading: 32, bottom: 20, trailing: 32))
                                 .background(Color("Light"))
                                 .cornerRadius(20)
-                            
-                            
-                            
-                            
-                            
-                            
                         }
                         
                         
@@ -109,20 +123,33 @@ struct ContentView: View {
                                             .padding()
                                         
                                             .onChange(of: heightInput) { oldValue, newValue in
-                                                // Filter out non-numeric characters
-                                                if newValue.count > 3 {
-                                                    heightInput = String(newValue.prefix(3))
-                                                }
-                                                height = Double(newValue) ?? 0
-                                            }
+                                                               
+                                                                isHeightEdited = true
+                                                                
+                                                                if newValue.count > 3 {
+                                                                    heightInput = String(newValue.prefix(3))
+                                                                }
+                                                                height = Double(newValue) ?? 0
+                                                            }
                                             .overlay(VStack{Divider().offset(x: 0, y: 15)})
                                             .font(.title2)
                                             .fontWeight(.bold)
+                                            .accentColor(Color("Dark"))
+                                        
                                         Text("cm").font(.title2).fontWeight(.medium)
                                     }
-                                    Text("*height should be between 50cm to 300cm").font(.caption2).foregroundStyle(height < 50 || height > 300 ? Color.red : Color.gray)
+                                    // Conditionally show error text
+                                           if isHeightEdited && (height < 50 || height > 300) {
+                                               Text("*height should be between 50cm to 300cm")
+                                                   .font(.caption2)
+                                                   .foregroundStyle(Color.red)
+                                           }else{
+                                               Text("*height should be between 50cm to 300cm")
+                                                   .font(.caption2)
+                                                   .foregroundStyle(Color("Light"))
+                                           }
                                     
-                                }.padding(EdgeInsets(top: 32, leading: 20, bottom: 20, trailing: 20))
+                                }.padding(EdgeInsets(top: 32, leading: 20, bottom: 12, trailing: 20))
                                     .background(Color("Light"))
                                     .cornerRadius(12)
                                 
@@ -142,6 +169,8 @@ struct ContentView: View {
                                             .keyboardType(.decimalPad)
                                             .padding()
                                             .onChange(of: weightInput) { oldValue, newValue in
+                                                
+                                                isWeightEdited = true
                                                 if newValue.count > 3 {
                                                     weightInput = String(newValue.prefix(3))
                                                 }
@@ -150,11 +179,23 @@ struct ContentView: View {
                                             .overlay(VStack{Divider().offset(x: 0, y: 15)})
                                             .font(.title2)
                                             .fontWeight(.bold)
+                                            .accentColor(Color("Dark"))
+                                        
                                         Text("kg").font(.title2).fontWeight(.medium)
                                     }
-                                    Text("*weight should be between 5kg to 500kg").font(.caption2).foregroundStyle(weight < 5 || weight > 500 ? Color.red : Color.gray)
                                     
-                                }.padding(EdgeInsets(top: 32, leading: 20, bottom: 20, trailing: 20))
+                                    if isWeightEdited && (weight < 5 || weight > 500) {
+                                        Text("*weight should be between 5kg to 500kg")
+                                            .font(.caption2)
+                                            .foregroundStyle(Color.red)
+                                    }else{
+                                        Text("*weight should be between 5kg to 500kg")
+                                            .font(.caption2)
+                                            .foregroundStyle(Color("Light"))
+                                    }
+                                  
+                                    
+                                }.padding(EdgeInsets(top: 32, leading: 20, bottom: 12, trailing: 20))
                                     .background(Color("Light"))
                                     .cornerRadius(12)
                                 
