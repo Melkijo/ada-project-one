@@ -105,13 +105,17 @@ struct infoBmiView: View {
         HStack {
             HStack {
                 Circle().fill(categoryColor).frame(width: 15, height: 15)
-                Text("\(category)").foregroundStyle(bmi >= bmiRangeFloor && bmi < bmiRangeCeil ? Color(.black) : Color("Dark"))
+                Text("\(category)").foregroundStyle(Color("Dark"))
             }
             Spacer()
-            Text("\(bmiRange)").foregroundStyle(bmi >= bmiRangeFloor && bmi < bmiRangeCeil ? Color(.black) : Color("Dark"))
+            Text("\(bmiRange)").foregroundStyle(Color("Dark"))
         }
         .padding(EdgeInsets(top: 8, leading: 20, bottom: 8, trailing: 20))
-        .background(bmi >= bmiRangeFloor && bmi < bmiRangeCeil ? Color("BodyText") : Color.clear)
+        .overlay(
+            RoundedRectangle(cornerRadius: 8)
+                .stroke(bmi >= bmiRangeFloor && bmi < bmiRangeCeil ? Color(.gray) : Color.clear , lineWidth: 2)
+        )
+        
         .cornerRadius(8)
     }
 }
