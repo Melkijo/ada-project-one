@@ -19,7 +19,7 @@ struct ResultView: View {
     @State var showResult: Bool = true
     
     @State private var isActive: Bool = true
-    @State private var dataInserted: Bool = false // Track if we've inserted data
+    @State private var dataInserted: Bool = false 
     
     @State private var optionChoose: Int = 0
     

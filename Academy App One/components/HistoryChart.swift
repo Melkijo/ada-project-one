@@ -9,116 +9,92 @@ import SwiftUI
 import Charts
 import SwiftData
 
-struct BMILineChartView: View {
-    var historyData: [HistoryBMI]
-    @Query private var historyItems: [HistoryBMI]
+struct HistoryChart: View {
+//    var historyData: [HistoryBMI]
+//    @Query private var historyItems: [HistoryBMI]
+    let sampleHistories = sampleData.histories
+    
     var body: some View {
-        VStack(alignment: .leading) {
-            Text("BMI History")
-                .font(.title2)
-                .bold()
-                .padding(.horizontal)
-            
-            VStack{
-                ForEach(historyItems.sorted(by: { $0.date > $1.date })) { item in
-                    HistoryItem(
-                        bmiScore: item.score,
-                        date: item.date
-                    )
-                }
-
-            }
-            
-            Chart {
-                ForEach(historyItems, id: \.id) { entry in
-                    LineMark(
-                        x: .value("Date", entry.date),
-                        y: .value("BMI", entry.score)
-                    )
-                    .interpolationMethod(.cardinal)
-                    .symbol {
-                        Circle()
-                            .fill(Color.blue)
-                            .frame(width: 10)
-                    }
+        VStack {
+            ZStack(alignment: .leading) {
+                // Y-axis labels in fixed position
+                VStack(alignment: .trailing, spacing: 0) {
+                    Text("40").frame(height: 30)
+                    Spacer()
                     
-                    PointMark(
-                        x: .value("Date", entry.date),
-                        y: .value("BMI", entry.score)
-                    )
-                    .annotation(position: .top) {
-                        Text(String(format: "%.1f", entry.score))
-                            .font(.caption)
-                    }
+                    Text("30").frame(height: 30)
+                    Spacer()
+                    
+                    Text("20").frame(height: 30)
+                    Spacer()
+                    Text("10").frame(height: 30)
                 }
-            }
-            .chartXAxis {
-                AxisMarks(values: .automatic) { value in
-                    AxisGridLine()
-                    AxisTick()
-                    AxisValueLabel {
-                        if let date = value.as(Date.self) {
-                            Text(date, style: .date)
-                                .font(.caption)
+                .frame(width: 35)
+                .font(.caption)
+                .foregroundColor(.gray)
+                .padding(.top, 20)
+                .padding(.bottom, 30)
+                .zIndex(1)
+                
+                // Scrollable chart with padding for y-axis
+                HStack(spacing: 0) {
+                    // Empty space for y-axis
+                    Rectangle()
+                        .fill(Color.clear)
+                        .frame(width: 35)
+                    
+                    // Scrollable chart
+                    ScrollView(.horizontal) {
+                        Chart {
+                            ForEach(sampleHistories) { d in
+                                LineMark(
+                                    x: .value("Date", d.date),
+                                    y: .value("Score", d.score)
+                                )
+                                .symbol(Circle().strokeBorder(lineWidth: 2))
+                                .symbolSize(30)
+                            }
+                            
+                            ForEach(sampleHistories) { d in
+                                PointMark(
+                                    x: .value("Date", d.date),
+                                    y: .value("Score", d.score)
+                                )
+                                .opacity(0)
+                                .annotation(position: .top) {
+                                    Text(String(format: "%.1f", d.score))
+                                        .font(.caption2)
+                                        .padding(4)
+                                        .background(Color("Light").opacity(0.8))
+                                        .cornerRadius(4)
+                                }
+                            }
                         }
+                        .frame(width: CGFloat(sampleHistories.count) * 50, height: 350)
+                        .foregroundStyle(Color("Dark"))
+                        .chartXScale(domain: [
+                            Calendar.current.date(byAdding: .day, value: -10, to: Date())!,
+                            Calendar.current.date(byAdding: .day, value: 1, to: Date())!
+                        ])
+                        .chartYScale(domain: 10...40)  // Fixed y-axis range
+                        .chartYAxis(.hidden)  // Hide the built-in y-axis
                     }
                 }
             }
-            .chartYAxis {
-                AxisMarks(position: .leading)
-            }
-            .frame(height: 300)
-            .padding()
+           
+        }.padding(.vertical)
+            .background(Color("Light"))
             
-            // BMI category legend
-            VStack(alignment: .leading, spacing: 8) {
-                ForEach(Array(Set(historyData.map { $0.category })).sorted(), id: \.self) { category in
-                    HStack {
-                        Circle()
-                            .fill(colorForCategory(category))
-                            .frame(width: 12, height: 12)
-                        Text(category)
-                            .font(.caption)
-                    }
-                }
-            }
-            .padding(.horizontal)
+            .cornerRadius(8)
+        
+        
         }
-    }
     
-    private func colorForCategory(_ category: String) -> Color {
-        switch category.lowercased() {
-        case "underweight":
-            return .blue
-        case "normal":
-            return .green
-        case "overweight":
-            return .orange
-        case "obese":
-            return .red
-        default:
-            return .gray
-        }
-    }
+    
+    
 }
 
-// Preview provider
-struct BMILineChartView_Previews: PreviewProvider {
-    static var previewData: [HistoryBMI] {
-        let calendar = Calendar.current
-        let today = Date()
-        return [
-            HistoryBMI(id: "1", bmiScore: 18.5, category: "Underweight", date: calendar.date(byAdding: .day, value: -30, to: today)!),
-            HistoryBMI(id: "2", bmiScore: 20.0, category: "Normal", date: calendar.date(byAdding: .day, value: -20, to: today)!),
-            HistoryBMI(id: "3", bmiScore: 22.5, category: "Normal", date: calendar.date(byAdding: .day, value: -15, to: today)!),
-            HistoryBMI(id: "4", bmiScore: 25.5, category: "Overweight", date: calendar.date(byAdding: .day, value: -10, to: today)!),
-            HistoryBMI(id: "5", bmiScore: 27.0, category: "Overweight", date: calendar.date(byAdding: .day, value: -5, to: today)!),
-            HistoryBMI(id: "6", bmiScore: 30.5, category: "Obese", date: today)
-        ]
-    }
-    
-    static var previews: some View {
-        BMILineChartView(historyData: previewData)
-            .padding()
-    }
+#Preview {
+HistoryChart()
 }
+

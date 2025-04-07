@@ -21,7 +21,7 @@ struct HistoryItem: View {
                 
                 HStack{
                     VStack(alignment:.leading){
-                        Text("\(bmiCategory.name)").padding(EdgeInsets(top: 8, leading: 24, bottom: 8, trailing: 24)).background(bmiCategory.color).cornerRadius(8).fontWeight(.medium).font(.footnote)
+                        Text("\(bmiCategory.name)").padding(EdgeInsets(top: 8, leading: 24, bottom: 8, trailing: 24)).background(bmiCategory.color).cornerRadius(8).fontWeight(.medium).font(.footnote).foregroundStyle(Color("LightBg"))
                         Spacer()
                         Text(String(format: "%.1f",bmiScore)).font(.largeTitle).fontWeight(.black).padding(.leading,8)
                         
@@ -31,15 +31,16 @@ struct HistoryItem: View {
                     VStack(alignment:.trailing){
                         Text("\(date.formattedDate())").foregroundStyle(.secondary)
                         Spacer()
-                        Image(systemName: "chevron.right").foregroundColor(.secondary)
+//                        Image(systemName: "chevron.right").foregroundColor(.secondary)
                     }.padding(.vertical,12)
                    
                 }
             }
             .frame(maxWidth: .infinity)
             .frame(height: 80)
-            .padding(24)
-            .background(Color.white).cornerRadius(12)
+            .padding(20)
+            .background(Color("Light"))
+            .cornerRadius(8)
         }
     }
 }
