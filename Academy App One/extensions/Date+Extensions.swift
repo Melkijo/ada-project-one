@@ -12,5 +12,13 @@ extension Date {
         formatter.dateFormat = "d MMMM yyyy"
         return formatter.string(from: self)
     }
+    
+    func adding (_ component: Calendar.Component, value: Int, using calendar: Calendar = .current) -> Date? {
+            return calendar.date(byAdding: component, value: value, to: self)
+        }
+
+        var startOfDay: Date {
+            return Calendar.current.startOfDay(for: self)
+        }
 }
 
