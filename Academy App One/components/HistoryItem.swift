@@ -10,6 +10,8 @@ import SwiftUI
 struct HistoryItem: View {
     let bmiScore: Double
     let date: Date
+    let weight: Double
+    let height: Double
     
     var bmiCategory: BMICategory {
         getBMICategory(bmi: bmiScore)
@@ -31,6 +33,10 @@ struct HistoryItem: View {
                     VStack(alignment:.trailing){
                         Text("\(date.formattedDate())").foregroundStyle(.secondary)
                         Spacer()
+                        HStack(spacing:20){
+                            Text("\(String(format: "%.1f",weight)) kg")
+                            Text("\(String(format: "%.1f",height)) cm")
+                        }
 //                        Image(systemName: "chevron.right").foregroundColor(.secondary)
                     }.padding(.vertical,12)
                    
@@ -46,5 +52,5 @@ struct HistoryItem: View {
 }
 
 #Preview {
-    HistoryItem(bmiScore: 25.0, date: Date())
+    HistoryItem(bmiScore: 30.0, date: Date(), weight: 70.0, height: 170)
 }

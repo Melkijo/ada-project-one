@@ -10,9 +10,7 @@ import Charts
 import SwiftData
 
 struct HistoryChart: View {
-//    var historyData: [HistoryBMI]
-//    @Query private var historyItems: [HistoryBMI]
-    let sampleHistories = sampleData.histories
+    var historyData: [HistoryBMI]
     
     var body: some View {
         VStack {
@@ -46,23 +44,23 @@ struct HistoryChart: View {
                     // Scrollable chart
                     ScrollView(.horizontal) {
                         Chart {
-                            ForEach(sampleHistories) { d in
+                            ForEach(historyData) { data in
                                 LineMark(
-                                    x: .value("Date", d.date),
-                                    y: .value("Score", d.score)
+                                    x: .value("Date", data.date),
+                                    y: .value("Score", data.score > 40 ? 40 : data.score)
                                 )
                                 .symbol(Circle().strokeBorder(lineWidth: 2))
                                 .symbolSize(30)
                             }
                             
-                            ForEach(sampleHistories) { d in
+                            ForEach(historyData) { data in
                                 PointMark(
-                                    x: .value("Date", d.date),
-                                    y: .value("Score", d.score)
+                                    x: .value("Date", data.date),
+                                    y: .value("Score",  data.score > 40 ? 40 : data.score)
                                 )
                                 .opacity(0)
                                 .annotation(position: .top) {
-                                    Text(String(format: "%.1f", d.score))
+                                    Text(String(format: "%.1f", data.score))
                                         .font(.caption2)
                                         .padding(4)
                                         .background(Color("Light").opacity(0.8))
@@ -70,31 +68,46 @@ struct HistoryChart: View {
                                 }
                             }
                         }
-                        .frame(width: CGFloat(sampleHistories.count) * 50, height: 350)
+                        .frame(width: max(CGFloat(historyData.count) * 50, UIScreen.main.bounds.width - 35), height: 350)
                         .foregroundStyle(Color("Dark"))
-                        .chartXScale(domain: [
-                            Calendar.current.date(byAdding: .day, value: -10, to: Date())!,
-                            Calendar.current.date(byAdding: .day, value: 1, to: Date())!
-                        ])
+                        .chartXScale(domain: calculateDateRange())
                         .chartYScale(domain: 10...40)  // Fixed y-axis range
                         .chartYAxis(.hidden)  // Hide the built-in y-axis
                     }
                 }
             }
-           
-        }.padding(.vertical)
-            .background(Color("Light"))
-            
-            .cornerRadius(8)
-        
-        
         }
+        .padding(.vertical)
+        .background(Color("Light"))
+        .cornerRadius(8)
+    }
     
-    
-    
+    // Helper function to calculate an appropriate date range for the chart
+    private func calculateDateRange() -> ClosedRange<Date> {
+        if historyData.isEmpty {
+            // Default range if no data
+            return (Calendar.current.date(byAdding: .day, value: -10, to: Date())!) ... Date()
+        }
+        
+        // Find min and max dates in the history data
+        let sortedDates = historyData.map { $0.date }.sorted()
+        
+        if let firstDate = sortedDates.first, let lastDate = sortedDates.last {
+            // Add some padding to both ends
+            let startDate = Calendar.current.date(byAdding: .day, value: -1, to: firstDate) ?? firstDate
+            let endDate = Calendar.current.date(byAdding: .day, value: 1, to: lastDate) ?? lastDate
+            return startDate ... endDate
+        } else {
+            // Fallback
+            return (Calendar.current.date(byAdding: .day, value: -10, to: Date())!) ... Date()
+        }
+    }
 }
 
-#Preview {
-HistoryChart()
-}
+// Extension to make HistoryBMI conform to Identifiable, which is required for ForEach
+extension HistoryBMI: Identifiable {}
+
+//#Preview {
+//HistoryChart()
+//}
 

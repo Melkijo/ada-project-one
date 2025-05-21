@@ -71,40 +71,7 @@ struct ResultView: View {
                     }
                     .padding(.top,180)
                 }
-                //
-                //                HStack(alignment: .center, spacing: 10){
-                //                    VStack{
-                ////                        Text("Age :").font(.caption)
-                //                        Text("\(age) Years old").font(.body).fontWeight(.light)
-                //
-                //                    }
-                //                    Text(" | ")
-                //                    VStack{
-                ////                        Text("Gender :").font(.caption)
-                //                        Text("\(gender)").font(.body).fontWeight(.light)
-                //
-                //
-                //
-                //                    }
-                //                    Text(" | ")
-                //                    VStack{
-                ////                        Text("Weight ").font(.caption)
-                //                        Text(String(format: "%.1f kg", weight)).font(.body).fontWeight(.light)
-                //
-                //
-                //                    }
-                //                    Text(" | ")
-                //                    VStack{
-                ////                        Text("Height :").font(.caption)
-                //                        Text(String(format: "%.f cm", height)).font(.body).fontWeight(.light)
-                //
-                //
-                //                    }
-                //
-                //                }.padding(.top,8)
-                //                    .padding(.bottom,32)
-                //
-                //
+
                 VStack(spacing:20){
                     
                     VStack {
@@ -156,29 +123,7 @@ struct ResultView: View {
                                 dataInserted = true
                             }
                             
-                            
-                            //                    NavigationLink(destination: ContentView()){
-                            //                        HStack {
-                            //                            Text("RE-CALCULATE")
-                            //                                .font(.headline).fontWeight(.bold)
-                            //                            Image(systemName: "arrow.turn.down.left").imageScale(.large)
-                            //                        }
-                            //                        .frame(maxWidth: .infinity)
-                            //                        .frame(height: 60)
-                            //                    }
-                            //                    .frame(maxWidth: .infinity)
-                            //                    .frame(height: 60)
-                            //                    .background(Color("Accent"))
-                            //                    .foregroundColor(.black)
-                            //                    .cornerRadius(12)
-                            //                    .font(.headline)
-                            //                    .onAppear {
-                            //                        // If you want to insert data when the view appears, do it here
-                            //                        if isActive && !dataInserted {
-                            //                            saveBMI()
-                            //                            dataInserted = true
-                            //                        }
-                            //                    }
+                           
                         }
                     Spacer()
                 }
@@ -223,7 +168,11 @@ struct ResultView: View {
             id: UUID().uuidString, // Better to use UUID for unique IDs
             bmiScore: bmiScore,
             category: bmiCategory.name,
-            date: Date()
+            date: Date(),
+            height: height,
+            weight: weight,
+            age: age,
+            gender: gender
         )
         context.insert(bmi)
         

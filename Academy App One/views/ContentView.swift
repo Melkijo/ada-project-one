@@ -20,6 +20,8 @@ struct ContentView: View {
     @State private var isWeightEdited = false
     @State private var isAgeEdited = false
     
+    @FocusState private var isTextFieldFocused: Bool
+    
     var body: some View {
         
         TabView{
@@ -73,6 +75,7 @@ struct ContentView: View {
                                         TextField("Enter your age", text: $ageInput)
                                             .keyboardType(.numberPad) // Better for age (integers only)
                                             .multilineTextAlignment(.leading)
+                                           
                                             .onChange(of: ageInput) { oldValue, newValue in
                                                 
                                                 isAgeEdited = true
@@ -102,9 +105,6 @@ struct ContentView: View {
                                             .foregroundStyle(Color("Light"))
                                     }
                                     
-                                    //                                Text("*age should be between 2 and 120")
-                                    //                                    .font(.caption)
-                                    //                                    .foregroundStyle(age < 2 || age > 120 ? Color.red : Color("Light"))
                                     
                                 }.padding(EdgeInsets(top: 40, leading: 32, bottom: 20, trailing: 32))
                                     .background(Color("Light"))
@@ -124,7 +124,7 @@ struct ContentView: View {
                                             TextField("00.00", text: $heightInput)
                                                 .keyboardType(.decimalPad)
                                                 .padding()
-                                            
+                                                
                                                 .onChange(of: heightInput) { oldValue, newValue in
                                                     
                                                     isHeightEdited = true
@@ -171,6 +171,7 @@ struct ContentView: View {
                                             TextField("00.00", text: $weightInput)
                                                 .keyboardType(.decimalPad)
                                                 .padding()
+                                               
                                                 .onChange(of: weightInput) { oldValue, newValue in
                                                     
                                                     isWeightEdited = true
@@ -248,37 +249,20 @@ struct ContentView: View {
                             
                             
                         }
-                        //                    ToolbarItem(placement: .topBarTrailing){
-                        //                        NavigationLink{
-                        //                            HistoryView()
-                        //
-                        //                        }label:{
-                        //                                                    Image(systemName: "clock.arrow.trianglehead.counterclockwise.rotate.90").padding(8)
-                        //                                                        .background(Color("MainGreen"))
-                        //                                                        .cornerRadius(6)
-                        //
-                        //                            Text("History").font(.body).fontWeight(.medium).underline(true, color: Color("Dark"))
-                        //                        }
-                        //                    }
+                    
                     }.toolbarBackground(Color("Light"), for: .navigationBar)
                     .toolbarBackground(.visible, for: .navigationBar)
                 
                 
             }.foregroundStyle(Color("Dark"))
                 .tabItem {
-                    Text("Home").foregroundStyle(Color("Dark"))
-                    Image(systemName: "house")
+                    Text("Calculate").foregroundStyle(Color("Dark"))
+                    Image(systemName: "powermeter")
                 }
             
             HistoryView().tabItem {
                 Text("History")
                 Image(systemName: "clock.arrow.trianglehead.counterclockwise.rotate.90")
-            }
-            
-            ProfileView().tabItem {
-                
-                Text("Profile")
-                Image(systemName: "person.circle")
             }
             
         }.onAppear().tint(Color("Accent"))
